@@ -104,6 +104,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
         }
     setVisibility()
+    println(currentPosition)
 
     }
     override fun onSaveInstanceState(outState: Bundle) {
@@ -117,7 +118,7 @@ class MainActivity : AppCompatActivity() {
 
     }
     fun setVisibility(){
-        //set what's on screen first
+        //after creating the activity, check what to show
         if(currentPosition == 0) {
             truetext=findViewById<Button>(R.id.true_button).text
             findViewById<Button>(R.id.show_cheat).visibility = View.INVISIBLE
@@ -126,6 +127,13 @@ class MainActivity : AppCompatActivity() {
             findViewById<Button>(R.id.true_button).layoutParams.width = ConstraintLayout.LayoutParams.MATCH_PARENT
             findViewById<Button>(R.id.search).visibility = View.INVISIBLE
 
+        }
+        if(currentPosition >= questions2.size) {
+            findViewById<Button>(R.id.true_button).text = "Pokaż wynik"
+            findViewById<Button>(R.id.true_button).layoutParams.width = ConstraintLayout.LayoutParams.MATCH_PARENT
+            findViewById<Button>(R.id.false_button).visibility = View.INVISIBLE
+            findViewById<Button>(R.id.search).visibility = View.INVISIBLE
+            findViewById<Button>(R.id.show_cheat).visibility = View.INVISIBLE
         }
     }
     fun answer(view: View) {
@@ -151,7 +159,7 @@ class MainActivity : AppCompatActivity() {
                 count += 10
                 countRightAnswer +=1
             }
-            if(currentPosition == questions2.size) {
+            if(currentPosition  >= questions2.size) {
                 findViewById<Button>(R.id.true_button).text = "Pokaż wynik"
                 findViewById<Button>(R.id.true_button).layoutParams.width = ConstraintLayout.LayoutParams.MATCH_PARENT
                 findViewById<Button>(R.id.false_button).visibility = View.INVISIBLE
@@ -159,7 +167,6 @@ class MainActivity : AppCompatActivity() {
                 findViewById<Button>(R.id.show_cheat).visibility = View.INVISIBLE
             }
             currentPosition++
-            println(question.correctAnswer)
 
         }
         else if(currentPosition==0)
@@ -179,7 +186,7 @@ class MainActivity : AppCompatActivity() {
         else {
             Toast.makeText(
                 applicationContext,
-                "Quiz zakończony,twój wynik: ${count}/100\nOszukałes $countCheat razy",
+                "Twój wynik: ${count}/100\nOszukałes $countCheat raz/razy",
                 Toast.LENGTH_SHORT
             ).show()
             findViewById<TextView>(R.id.show_question).text = "Poprawne odpowiedzi:\n$countRightAnswer/10"
@@ -204,7 +211,7 @@ class MainActivity : AppCompatActivity() {
             result ->
         if (result.resultCode == Activity.RESULT_OK)
             Toast.makeText(
-                applicationContext, "Oszukałeś!!",
+                applicationContext, "Oszukałeś!! Odjęto 15 pkt",
                 Toast.LENGTH_SHORT
             ).show()
 /*            findViewById<TextView>(R.id.show_question).text =
